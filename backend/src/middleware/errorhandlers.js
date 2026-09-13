@@ -1,5 +1,5 @@
 const errorHandlers = (err, req, res, next) => {
-    
+
     console.log(err.message)
 
     const status = err.status || 500
@@ -10,3 +10,4 @@ const errorHandlers = (err, req, res, next) => {
 }
 
 export default errorHandlers
+

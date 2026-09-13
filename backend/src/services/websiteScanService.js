@@ -1,18 +1,25 @@
 import nmapService from "./tools/nmapService.js";
+import zapService from "./tools/zapService.js";
+import nucleiService from "./tools/nucleiService.js"; // new import
 
 const websiteScan = async (target) => {
 
-    const result = await nmapService(target);
-    
+    // Run Nmap, Nuclei and ZAP scans concurrently
+    const [nmapResult, nucleiResult, zapResult] = await Promise.all([
+        nmapService(target),
+        nucleiService(target),
+        zapService(target)
+    ]);
+
     const results = {
         target,
-        nmap: result,
-        zap: null,
-        testssl: null,
-        nuclei: null
+        nmap: nmapResult,
+        nuclei: nucleiResult, // contains { findings: [...] }
+        zap: zapResult,
+        testssl: null
     };
 
-    return results
+    return results;
 }
 
 export default websiteScan
